@@ -1,0 +1,89 @@
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
+import Feedback from "./Feedback";
+import Hud from "./Hud";
+import Lixeiras from "./Lixeiras";
+import Residuo from "./Residuo";
+
+const CATEGORIAS = ["vidro", "plastico", "papel", "organico", "metal"];
+
+export default function Jogo({ modo = "classico", catalogo = [], onEncerrar }) {
+  const itens = Array.isArray(catalogo) ? catalogo : catalogo.residuos || [];
+  const [indice, setIndice] = useState(0);
+  const [pontuacao, setPontuacao] = useState(0);
+  const [vidas, setVidas] = useState(3);
+  const [tempo, setTempo] = useState(modo === "tempo" ? 60 : null);
+  const [bloqueado, setBloqueado] = useState(false);
+  const [feedback, setFeedback] = useState(null);
+  const [estatisticas, setEstatisticas] = useState({ acertos: 0, erros: 0, sequencia: 0, maiorSequencia: 0 });
+
+  const residuo = itens[indice];
+  const tempoFormatado = useMemo(() => {
+    if (tempo === null) return undefined;
+    return `${String(Math.floor(tempo / 60)).padStart(2, "0")}:${String(tempo % 60).padStart(2, "0")}`;
+  }, [tempo]);
+
+  useEffect(() => {
+    if (modo !== "tempo" || tempo === null || tempo <= 0) return undefined;
+    const timer = window.setInterval(() => setTempo((valor) => Math.max(0, valor - 1)), 1000);
+    return () => window.clearInterval(timer);
+  }, [modo, tempo]);
+
+  useEffect(() => {
+    if ((modo === "tempo" && tempo === 0) || (modo !== "tempo" && vidas === 0)) {
+      onEncerrar?.({ modo, pontuacao, vidas, ...estatisticas });
+    }
+  }, [modo, tempo, vidas, pontuacao, estatisticas, onEncerrar]);
+
+  function responder(categoria) {
+    if (bloqueado || !residuo) return;
+    const acertou = categoria === residuo.categoria;
+    const novaSequencia = acertou ? estatisticas.sequencia + 1 : 0;
+    const pontos = acertou ? (novaSequencia >= 3 ? 15 : 10) : 0;
+    const novaEstatistica = {
+      acertos: estatisticas.acertos + (acertou ? 1 : 0),
+      erros: estatisticas.erros + (acertou ? 0 : 1),
+      sequencia: novaSequencia,
+      maiorSequencia: Math.max(estatisticas.maiorSequencia, novaSequencia),
+    };
+    setPontuacao((valor) => valor + pontos);
+    setEstatisticas(novaEstatistica);
+    if (!acertou && modo === "classico") setVidas((valor) => Math.max(0, valor - 1));
+    setFeedback({
+      natureza: acertou ? "acerto" : "erro",
+      mensagem: acertou ? `Acerto! ${residuo.categoria}.` : "Não é essa lixeira.",
+      explicacao: acertou ? undefined : residuo.explicacao,
+    });
+    setBloqueado(true);
+    window.setTimeout(() => {
+      setIndice((valor) => (itens.length ? (valor + 1) % itens.length : valor));
+      setFeedback(null);
+      setBloqueado(false);
+    }, acertou ? (modo === "tempo" ? 600 : 1200) : (modo === "tempo" ? 1600 : 3000));
+  }
+
+  function soltarResiduo(evento) {
+    const elemento = document.elementFromPoint(evento.clientX, evento.clientY);
+    const lixeira = elemento?.closest?.("[data-categoria]");
+    if (lixeira) responder(lixeira.dataset.categoria);
+  }
+
+  if (!residuo) return <Feedback natureza="info" mensagem="Nenhum resíduo disponível." />;
+
+  return (
+    <main className="jogo">
+      <Hud modo={modo} pontuacao={pontuacao} vidas={vidas} tempoFormatado={tempoFormatado} />
+      <Residuo residuo={residuo} podeJogar={!bloqueado} onSoltar={soltarResiduo} />
+      <Feedback {...feedback} />
+      <Lixeiras onEscolher={responder} />
+      <div className="jogo-acoes" aria-label="Ações da rodada">
+        {CATEGORIAS.map((categoria) => (
+          <button key={categoria} type="button" onClick={() => responder(categoria)} disabled={bloqueado}>
+            {categoria}
+          </button>
+        ))}
+      </div>
+    </main>
+  );
+}

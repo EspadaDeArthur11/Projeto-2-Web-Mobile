@@ -159,7 +159,7 @@ e a mais antiga é descartada.
 | Camada | Escolha |
 |---|---|
 | Framework | Next.js com App Router |
-| Linguagem | TypeScript |
+| Linguagem | JavaScript |
 | Interface | React |
 | Estilos | CSS global com variáveis |
 | Dados | arquivo JSON versionado |
@@ -201,38 +201,37 @@ possível de cada rota, de modo que a estrutura estática permaneça no servidor
 ```
 eco-mania/
 ├── app/
-│   ├── layout.tsx
-│   ├── page.tsx
-│   ├── not-found.tsx
-│   ├── classico/page.tsx
-│   ├── tempo/page.tsx
-│   ├── resultado/page.tsx
-│   └── api/residuos/route.ts
+│   ├── layout.js
+│   ├── page.js
+│   ├── not-found.js
+│   ├── classico/page.js
+│   ├── tempo/page.js
+│   ├── resultado/page.js
+│   └── api/residuos/route.js
 │
 ├── components/
-│   ├── Jogo.tsx
-│   ├── Hud.tsx
-│   ├── Residuo.tsx
-│   ├── Lixeiras.tsx
-│   ├── Lixeira.tsx
-│   ├── Feedback.tsx
-│   ├── BotaoModo.tsx
-│   ├── CaixaDaltonico.tsx
-│   ├── HistoricoPartidas.tsx
-│   ├── PainelResultado.tsx
-│   └── DicaRevisao.tsx
+│   ├── Jogo.jsx
+│   ├── Hud.jsx
+│   ├── Residuo.jsx
+│   ├── Lixeiras.jsx
+│   ├── Lixeira.jsx
+│   ├── Feedback.jsx
+│   ├── BotaoModo.jsx
+│   ├── CaixaDaltonico.jsx
+│   ├── HistoricoPartidas.jsx
+│   ├── PainelResultado.jsx
+│   └── DicaRevisao.jsx
 │
 ├── hooks/
-│   ├── useJogo.ts
-│   ├── useCronometro.ts
-│   ├── useArraste.ts
-│   ├── useArmazenamento.ts
-│   └── useDaltonismo.ts
+│   ├── useJogo.js
+│   ├── useCronometro.js
+│   ├── useArraste.js
+│   ├── useArmazenamento.js
+│   └── useDaltonismo.js
 │
 ├── lib/
-│   ├── tipos.ts
-│   ├── constantes.ts
-│   └── historico.ts
+│   ├── constantes.js
+│   └── historico.js
 │
 ├── data/
 │   └── residuos.json
@@ -253,13 +252,13 @@ eco-mania/
 
 | Rota | Arquivo | Camada | Responsabilidade |
 |---|---|---|---|
-| — | `app/layout.tsx` | Servidor | Estrutura do documento, idioma, metadados e importação dos estilos |
-| `/` | `app/page.tsx` | Servidor | Menu com apresentação, acesso aos modos, histórico e acessibilidade |
-| `/classico` | `app/classico/page.tsx` | Servidor | Carrega o catálogo e monta a partida no modo clássico |
-| `/tempo` | `app/tempo/page.tsx` | Servidor | Carrega o catálogo e monta a partida no modo por tempo |
-| `/resultado` | `app/resultado/page.tsx` | Cliente | Recupera o resultado da partida e apresenta o desfecho |
-| `/api/residuos` | `app/api/residuos/route.ts` | Servidor | Entrega o catálogo em JSON, com filtro opcional por categoria |
-| qualquer outra | `app/not-found.tsx` | Servidor | Página de endereço inexistente, com retorno ao menu |
+| — | `app/layout.js` | Servidor | Estrutura do documento, idioma, metadados e importação dos estilos |
+| `/` | `app/page.js` | Servidor | Menu com apresentação, acesso aos modos, histórico e acessibilidade |
+| `/classico` | `app/classico/page.js` | Servidor | Carrega o catálogo e monta a partida no modo clássico |
+| `/tempo` | `app/tempo/page.js` | Servidor | Carrega o catálogo e monta a partida no modo por tempo |
+| `/resultado` | `app/resultado/page.js` | Cliente | Recupera o resultado da partida e apresenta o desfecho |
+| `/api/residuos` | `app/api/residuos/route.js` | Servidor | Entrega o catálogo em JSON, com filtro opcional por categoria |
+| qualquer outra | `app/not-found.js` | Servidor | Página de endereço inexistente, com retorno ao menu |
 
 As rotas de jogo são renderizadas no servidor e entregam o catálogo como
 propriedade ao componente de partida, que opera no cliente. A rota de resultado
@@ -301,9 +300,8 @@ propriedade ao componente de partida, que opera no cliente. A rota de resultado
 
 | Módulo | Conteúdo |
 |---|---|
-| `lib/tipos.ts` | Definições de Resíduo, Categoria, Modo de Jogo e Resultado de Partida |
-| `lib/constantes.ts` | Rótulos das categorias, chaves de armazenamento, durações de pausa e valores de pontuação |
-| `lib/historico.ts` | Formatação do registro de partida e rotação da fila de duas posições |
+| `lib/constantes.js` | Rótulos das categorias, chaves de armazenamento, durações de pausa e valores de pontuação |
+| `lib/historico.js` | Formatação do registro de partida e rotação da fila de duas posições |
 
 Concentrar durações, chaves e valores de pontuação em um módulo único evita a
 dispersão desses números pelo código, situação em que alterar um e esquecer
