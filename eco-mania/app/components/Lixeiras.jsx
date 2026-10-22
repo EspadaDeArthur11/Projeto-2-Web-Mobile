@@ -1,6 +1,5 @@
 import Lixeira from "./Lixeira";
-
-const CATEGORIAS = ["vidro", "plastico", "papel", "organico", "metal"];
+import { CATEGORIAS } from "@/lib/constantes";
 
 export default function Lixeiras({ lixeiraSobPonteiro, mostrarRotulo = true, onEscolher }) {
   return (

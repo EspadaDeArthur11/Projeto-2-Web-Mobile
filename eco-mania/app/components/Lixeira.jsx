@@ -1,13 +1,13 @@
-const DADOS = {
-  vidro: { cor: "#16803c", simbolo: "◇", rotulo: "Vidro" },
-  plastico: { cor: "#c53030", simbolo: "♢", rotulo: "Plástico" },
-  papel: { cor: "#2b6cb0", simbolo: "▤", rotulo: "Papel" },
-  organico: { cor: "#805b35", simbolo: "♧", rotulo: "Orgânico" },
-  metal: { cor: "#b7791f", simbolo: "▣", rotulo: "Metal" },
-};
+import { DADOS_CATEGORIAS } from "@/lib/constantes";
 
-export default function Lixeira({ categoria, rotulo, destaque = false, mostrarRotulo = true, onEscolher }) {
-  const dados = DADOS[categoria] || { cor: "#555", simbolo: "?", rotulo: categoria };
+export default function Lixeira({
+  categoria,
+  rotulo,
+  destaque = false,
+  mostrarRotulo = true,
+  onEscolher,
+}) {
+  const dados = DADOS_CATEGORIAS[categoria] || { cor: "#555", simbolo: "?", rotulo: categoria };
   const nome = rotulo || dados.rotulo;
 
   return (

@@ -1,15 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
-const STORAGE_KEY = "eco-mania:mostrar-rotulos";
+import { CHAVES_STORAGE } from "@/lib/constantes";
 
 export default function CaixaDaltonico({ onChange }) {
   const [ativo, setAtivo] = useState(false);
 
   useEffect(() => {
     try {
-      setAtivo(window.localStorage.getItem(STORAGE_KEY) === "true");
+      setAtivo(window.localStorage.getItem(CHAVES_STORAGE.MOSTRAR_ROTULOS) === "true");
     } catch {
       // O jogo continua funcionando quando o armazenamento está indisponível.
     }
@@ -20,7 +19,7 @@ export default function CaixaDaltonico({ onChange }) {
     setAtivo(novoValor);
     onChange?.(novoValor);
     try {
-      window.localStorage.setItem(STORAGE_KEY, String(novoValor));
+      window.localStorage.setItem(CHAVES_STORAGE.MOSTRAR_ROTULOS, String(novoValor));
     } catch {
       // A preferência é apenas uma conveniência e não deve interromper o jogo.
     }

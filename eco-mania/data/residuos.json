@@ -1,0 +1,94 @@
+{
+  "residuos": [
+    {
+      "arquivo": "garrafa-azeite.png",
+      "nome": "Garrafa de azeite",
+      "categoria": "vidro",
+      "explicacao": "Recipientes de vidro devem ser limpos e descartados na lixeira verde."
+    },
+    {
+      "arquivo": "pote-geleia.png",
+      "nome": "Pote de geleia",
+      "categoria": "vidro",
+      "explicacao": "Potes de vidro são 100% recicláveis e pertencem à lixeira verde."
+    },
+    {
+      "arquivo": "frasco-perfume.png",
+      "nome": "Frasco de perfume",
+      "categoria": "vidro",
+      "explicacao": "Frascos de vidro vazios vão para a lixeira verde após retirar tampas de outros materiais."
+    },
+    {
+      "arquivo": "garrafa-refrigerante.png",
+      "nome": "Garrafa de refrigerante",
+      "categoria": "plastico",
+      "explicacao": "Garrafas PET e embalagens plásticas devem ser esvaziadas e descartadas na lixeira vermelha."
+    },
+    {
+      "arquivo": "pote-iogurte.png",
+      "nome": "Pote de iogurte",
+      "categoria": "plastico",
+      "explicacao": "Embalagens plásticas limpas pertencem à lixeira vermelha."
+    },
+    {
+      "arquivo": "sacola-compras.png",
+      "nome": "Sacola de mercado",
+      "categoria": "plastico",
+      "explicacao": "Filmes e sacolas plásticas devem ser reciclados na lixeira vermelha."
+    },
+    {
+      "arquivo": "caixa-papelao.png",
+      "nome": "Caixa de encomenda",
+      "categoria": "papel",
+      "explicacao": "Papelões e folhas limpos e secos são destinados à lixeira azul."
+    },
+    {
+      "arquivo": "jornal-velho.png",
+      "nome": "Jornal antigo",
+      "categoria": "papel",
+      "explicacao": "Jornais e revistas sem contaminação por gordura vão para a lixeira azul."
+    },
+    {
+      "arquivo": "folha-rascunho.png",
+      "nome": "Folha de rascunho",
+      "categoria": "papel",
+      "explicacao": "Papéis secos de escritório e folhas usadas pertencem à lixeira azul."
+    },
+    {
+      "arquivo": "casca-banana.png",
+      "nome": "Casca de banana",
+      "categoria": "organico",
+      "explicacao": "Restos de frutas, legumes e alimentos são resíduos orgânicos e vão para a lixeira marrom."
+    },
+    {
+      "arquivo": "borra-cafe.png",
+      "nome": "Borra de café",
+      "categoria": "organico",
+      "explicacao": "Filtros com pó de café e resíduos alimentares pertencem à lixeira marrom."
+    },
+    {
+      "arquivo": "resto-maca.png",
+      "nome": "Resto de maçã",
+      "categoria": "organico",
+      "explicacao": "Sobras de alimentos crus ou cozidos devem ser encaminhadas para compostagem ou lixeira marrom."
+    },
+    {
+      "arquivo": "lata-refrigerante.png",
+      "nome": "Lata de refrigerante",
+      "categoria": "metal",
+      "explicacao": "Latas de alumínio são recicláveis e devem ser descartadas na lixeira amarela."
+    },
+    {
+      "arquivo": "lata-conserva.png",
+      "nome": "Lata de milho",
+      "categoria": "metal",
+      "explicacao": "Latas de aço e conservas limpas pertencem à lixeira amarela."
+    },
+    {
+      "arquivo": "tampa-metalica.png",
+      "nome": "Tampa de garrafa",
+      "categoria": "metal",
+      "explicacao": "Tampinhas de metal devem ser separadas na lixeira amarela."
+    }
+  ]
+}

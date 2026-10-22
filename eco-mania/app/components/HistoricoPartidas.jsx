@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
-const STORAGE_KEY = "eco-mania:historico";
+import { CHAVES_STORAGE } from "@/lib/constantes";
 
 export default function HistoricoPartidas({ registros: registrosIniciais }) {
   const [registros, setRegistros] = useState(registrosIniciais || []);
@@ -10,7 +9,7 @@ export default function HistoricoPartidas({ registros: registrosIniciais }) {
   useEffect(() => {
     if (registrosIniciais) return;
     try {
-      const salvo = JSON.parse(window.localStorage.getItem(STORAGE_KEY) || "[]");
+      const salvo = JSON.parse(window.localStorage.getItem(CHAVES_STORAGE.HISTORICO) || "[]");
       setRegistros(Array.isArray(salvo) ? salvo.slice(0, 2) : []);
     } catch {
       setRegistros([]);
