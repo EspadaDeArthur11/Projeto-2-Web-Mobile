@@ -5,7 +5,7 @@ import Feedback from "./Feedback";
 import Hud from "./Hud";
 import Lixeiras from "./Lixeiras";
 import Residuo from "./Residuo";
-import { PONTUACAO, REGRAS_MODOS } from "@/lib/constantes";
+import { CHAVES_STORAGE, PONTUACAO, REGRAS_MODOS } from "@/lib/constantes";
 
 export default function Jogo({ modo = "classico", catalogo = [], onEncerrar }) {
   const itens = Array.isArray(catalogo) ? catalogo : catalogo.residuos || [];
@@ -17,12 +17,25 @@ export default function Jogo({ modo = "classico", catalogo = [], onEncerrar }) {
   const [tempo, setTempo] = useState(modo === "tempo" ? regras.tempoInicialSegundos : null);
   const [bloqueado, setBloqueado] = useState(false);
   const [feedback, setFeedback] = useState(null);
+  const [mostrarRotulo, setMostrarRotulo] = useState(false);
+  const [errosPorCategoria, setErrosPorCategoria] = useState({});
   const [estatisticas, setEstatisticas] = useState({
     acertos: 0,
     erros: 0,
     sequencia: 0,
     maiorSequencia: 0,
   });
+
+  // Lê a preferência de rótulos do localStorage após a montagem no cliente.
+  useEffect(() => {
+    try {
+      setMostrarRotulo(
+        window.localStorage.getItem(CHAVES_STORAGE.MOSTRAR_ROTULOS) === "true"
+      );
+    } catch {
+      // Sem acesso ao armazenamento: continua sem rótulos.
+    }
+  }, []);
 
   const residuo = itens[indice];
 
@@ -33,6 +46,7 @@ export default function Jogo({ modo = "classico", catalogo = [], onEncerrar }) {
     return `${minutos}:${segundos}`;
   }, [tempo]);
 
+  // Cronômetro regressivo — só ativo no modo por tempo.
   useEffect(() => {
     if (modo !== "tempo" || tempo === null || tempo <= 0) return undefined;
     const timer = window.setInterval(() => {
@@ -41,14 +55,25 @@ export default function Jogo({ modo = "classico", catalogo = [], onEncerrar }) {
     return () => window.clearInterval(timer);
   }, [modo, tempo]);
 
+  // Detecta fim de partida e aciona o callback de encerramento.
   useEffect(() => {
     const terminouTempo = modo === "tempo" && tempo === 0;
     const terminouVidas = modo === "classico" && vidas === 0;
 
     if (terminouTempo || terminouVidas) {
-      onEncerrar?.({ modo, pontuacao, vidas, ...estatisticas });
+      // Calcula a categoria com maior número de erros.
+      let categoriaMaiorErro = null;
+      let maxErros = 0;
+      Object.entries(errosPorCategoria).forEach(([cat, count]) => {
+        if (count > maxErros) {
+          maxErros = count;
+          categoriaMaiorErro = cat;
+        }
+      });
+
+      onEncerrar?.({ modo, pontuacao, vidas, ...estatisticas, categoriaMaiorErro });
     }
-  }, [modo, tempo, vidas, pontuacao, estatisticas, onEncerrar]);
+  }, [modo, tempo, vidas, pontuacao, estatisticas, errosPorCategoria, onEncerrar]);
 
   function responder(categoria) {
     if (bloqueado || !residuo) return;
@@ -68,6 +93,14 @@ export default function Jogo({ modo = "classico", catalogo = [], onEncerrar }) {
       sequencia: novaSequencia,
       maiorSequencia: Math.max(prev.maiorSequencia, novaSequencia),
     }));
+
+    // Contabiliza erros por categoria para o relatório final.
+    if (!acertou) {
+      setErrosPorCategoria((prev) => ({
+        ...prev,
+        [residuo.categoria]: (prev[residuo.categoria] || 0) + 1,
+      }));
+    }
 
     if (!acertou && modo === "classico") {
       setVidas((valor) => Math.max(0, (valor ?? regras.vidasIniciais) - 1));
@@ -113,7 +146,7 @@ export default function Jogo({ modo = "classico", catalogo = [], onEncerrar }) {
         onSoltar={soltarResiduo}
       />
       <Feedback {...feedback} />
-      <Lixeiras onEscolher={responder} />
+      <Lixeiras mostrarRotulo={mostrarRotulo} onEscolher={responder} />
     </main>
   );
 }

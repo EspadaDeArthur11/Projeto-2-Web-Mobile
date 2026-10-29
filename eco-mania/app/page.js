@@ -1,69 +1,47 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+/**
+ * app/page.js — Rota raiz: /
+ * Server Component.
+ *
+ * Menu principal da aplicação: apresentação, escolha de modo,
+ * preferência de acessibilidade e histórico das últimas partidas.
+ */
+
+import BotaoModo from "./components/BotaoModo";
+import CaixaDaltonico from "./components/CaixaDaltonico";
+import HistoricoPartidas from "./components/HistoricoPartidas";
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>
-            To get started, edit the{" "}
-            <code className={styles.code}>page.js</code> file.
-          </h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <main className="menu">
+      <header className="menu-cabecalho">
+        <h1>Eco Mania</h1>
+        <p>Aprenda a separar o lixo corretamente jogando rodadas rápidas.</p>
+      </header>
+
+      <section className="menu-modos" aria-labelledby="modos-titulo">
+        <h2 id="modos-titulo">Escolha o modo de jogo</h2>
+        <div className="menu-botoes">
+          <BotaoModo
+            destino="/classico"
+            titulo="Clássico"
+            descricao="Você tem 3 vidas. Cada erro custa uma. Jogue até perder todas."
+            cor="#2b6cb0"
+          />
+          <BotaoModo
+            destino="/tempo"
+            titulo="Por Tempo"
+            descricao="60 segundos no relógio. Acerte o máximo antes que o tempo acabe."
+            cor="#c05621"
+          />
         </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+      </section>
+
+      <section className="menu-opcoes" aria-labelledby="opcoes-titulo">
+        <h2 id="opcoes-titulo">Acessibilidade</h2>
+        <CaixaDaltonico />
+      </section>
+
+      <HistoricoPartidas />
+    </main>
   );
 }
