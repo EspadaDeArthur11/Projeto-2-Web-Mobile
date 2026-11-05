@@ -33,7 +33,7 @@ export default function Residuo({ residuo, podeJogar = true, onSoltar }) {
   return (
     <div
       className="residuo"
-      style={{ transform: `translate(${deslocamento.x}px, ${deslocamento.y}px)` }}
+      style={{ transform: `translate(${deslocamento.x}px, ${deslocamento.y}px)`, touchAction: "none" }}
       onPointerDown={iniciar}
       onPointerMove={mover}
       onPointerUp={finalizar}

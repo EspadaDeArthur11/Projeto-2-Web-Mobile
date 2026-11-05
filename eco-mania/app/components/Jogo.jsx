@@ -5,13 +5,16 @@ import Feedback from "./Feedback";
 import Hud from "./Hud";
 import Lixeiras from "./Lixeiras";
 import Residuo from "./Residuo";
-import { CHAVES_STORAGE, PONTUACAO, REGRAS_MODOS } from "@/lib/constantes";
+import { CHAVES_STORAGE, DADOS_CATEGORIAS, PONTUACAO, REGRAS_MODOS } from "@/lib/constantes";
 
 export default function Jogo({ modo = "classico", catalogo = [], onEncerrar }) {
   const itens = Array.isArray(catalogo) ? catalogo : catalogo.residuos || [];
   const regras = REGRAS_MODOS[modo] || REGRAS_MODOS.classico;
 
-  const [indice, setIndice] = useState(0);
+  // RF02: sorteio aleatório sem repetir o resíduo anterior.
+  const [indice, setIndice] = useState(() =>
+    itens.length ? Math.floor(Math.random() * itens.length) : 0
+  );
   const [pontuacao, setPontuacao] = useState(0);
   const [vidas, setVidas] = useState(modo === "classico" ? regras.vidasIniciais : null);
   const [tempo, setTempo] = useState(modo === "tempo" ? regras.tempoInicialSegundos : null);
@@ -108,7 +111,9 @@ export default function Jogo({ modo = "classico", catalogo = [], onEncerrar }) {
 
     setFeedback({
       natureza: acertou ? "acerto" : "erro",
-      mensagem: acertou ? `Acerto! ${residuo.categoria}.` : "Não é essa lixeira.",
+      mensagem: acertou
+        ? `✓ Correto! Vai para a lixeira de ${DADOS_CATEGORIAS[residuo.categoria]?.rotulo || residuo.categoria}.`
+        : "Não é essa lixeira.",
       explicacao: acertou ? undefined : residuo.explicacao,
     });
 
@@ -116,7 +121,14 @@ export default function Jogo({ modo = "classico", catalogo = [], onEncerrar }) {
     const tempoPausa = acertou ? regras.pausaAcertoMs : regras.pausaErroMs;
 
     window.setTimeout(() => {
-      setIndice((valor) => (itens.length ? (valor + 1) % itens.length : valor));
+      // Sorteia aleatoriamente excluindo o índice atual (RF02).
+      setIndice((atual) => {
+        if (itens.length <= 1) return atual;
+        const candidatos = itens
+          .map((_, i) => i)
+          .filter((i) => i !== atual);
+        return candidatos[Math.floor(Math.random() * candidatos.length)];
+      });
       setFeedback(null);
       setBloqueado(false);
     }, tempoPausa);
